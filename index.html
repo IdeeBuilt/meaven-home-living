@@ -2050,6 +2050,8 @@
 
     fetch('https://script.google.com/macros/s/AKfycbzhgqgR1NNWX4fJ6WVBdy7vMPy_BYiWmRkLCis5m-EaKqOYE9XQ89DJRn0vPIY3E6xxHA/exec', {
       method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data)
     })
     .then(() => {
