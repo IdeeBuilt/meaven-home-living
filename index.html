@@ -2034,8 +2034,38 @@
   });
   bookingForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    bookingForm.style.display = 'none';
-    bookingSuccess.classList.add('show');
+    const submitBtn = bookingForm.querySelector('.booking-submit');
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+
+    const data = {
+      name: document.getElementById('bookName').value,
+      email: document.getElementById('bookEmail').value,
+      phone: document.getElementById('bookPhone').value,
+      service: document.getElementById('bookService').value,
+      budget: document.getElementById('bookBudget').value,
+      timeline: document.getElementById('bookTimeline').value,
+      message: document.getElementById('bookMessage').value
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbw3-dBpznCAdsQp1rr1jkNE9bgkCTtrq9iSgIXIIQu_ktLKnm7dvah-loF-olmx9FHsbg/exec', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      bookingForm.style.display = 'none';
+      bookingSuccess.classList.add('show');
+      bookingForm.reset();
+      submitBtn.textContent = 'Send Consultation Request';
+      submitBtn.disabled = false;
+    })
+    .catch(() => {
+      bookingForm.style.display = 'none';
+      bookingSuccess.classList.add('show');
+      bookingForm.reset();
+      submitBtn.textContent = 'Send Consultation Request';
+      submitBtn.disabled = false;
+    });
   });
 
   // Process modal
