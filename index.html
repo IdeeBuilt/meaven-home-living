@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAEVEN — Home & Living</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --obsidian: #1A1814;
+    --warm-sand: #C9A87C;
+    --sage: #7A8C75;
+    --stone: #D4CEBC;
+    --rust: #9C5A3C;
+    --linen: #E8E0D0;
+    --linen-light: #F5F1EB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--linen-light);
+    color: var(--obsidian);
+    overflow-x: hidden;
+  }
+
+  /* ── Preloader ── */
+  #preloader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--obsidian);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #preloader.hidden { opacity: 0; visibility: hidden; }
+  #preloader .logo-reveal {
+    font-family: 'Lora', serif;
+    font-size: 3rem;
+    color: var(--warm-sand);
+    letter-spacing: 0.3em;
+    animation: breathe 1.5s ease-in-out infinite alternate;
+  }
+  #preloader .logo-reveal span {
+    display: block; font-family: 'Poppins', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.5em;
+    color: var(--stone); margin-top: 0.5rem; text-align: center;
+  }
+  @keyframes breathe { from { opacity: 0.4; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+
+  /* ── Cursor Glow ── */
+  .cursor-glow {
+    position: fixed; width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,124,0.07) 0%, transparent 70%);
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.3s ease, top 0.3s ease;
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 1.2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(26,24,20,0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 30px rgba(0,0,0,0.15);
+    padding: 0.8rem 3rem;
+  }
+  .nav-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.4rem; letter-spacing: 0.2em;
+    color: var(--linen); text-decoration: none;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .nav-brand .brand-icon {
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--warm-sand);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-brand .brand-icon::before {
+    content: ''; width: 8px; height: 8px;
+    border: 1.5px solid var(--warm-sand);
+    border-radius: 50%;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--stone); text-decoration: none;
+    font-weight: 400; position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--warm-sand);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--warm-sand); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid var(--warm-sand); color: var(--warm-sand);
+    text-decoration: none; transition: all 0.3s ease;
+  }
+  .nav-cta:hover { background: var(--warm-sand); color: var(--obsidian); }
+
+  /* ── Mobile Nav Toggle ── */
+  .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+  .nav-toggle span { width: 24px; height: 1.5px; background: var(--linen); transition: 0.3s; }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--obsidian);
+    background-image: url('landing%20page%20image/pexels-jimmy-nilsson-masth-193596566-11427524.jpg');
+    background-size: cover; background-position: center;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(26,24,20,0.7);
+    z-index: 1;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,124,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,124,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-accent-line {
+    position: absolute; width: 1px; background: var(--warm-sand); opacity: 0.15;
+  }
+  .hero-accent-line:nth-child(2) { left: 15%; top: 0; height: 100%; }
+  .hero-accent-line:nth-child(3) { left: 85%; top: 0; height: 100%; }
+  .hero-accent-line:nth-child(4) { top: 20%; left: 0; width: 100%; height: 1px; }
+  .hero-accent-line:nth-child(5) { top: 80%; left: 0; width: 100%; height: 1px; }
+
+  .hero-content { text-align: center; position: relative; z-index: 3; }
+  .hero-eyebrow {
+    font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 2rem; font-weight: 400;
+    opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-logo {
+    font-family: 'Lora', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    letter-spacing: 0.2em; color: var(--linen);
+    position: relative;
+    opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
+  }
+  .hero-logo::after {
+    content: ''; display: block;
+    width: 60px; height: 2px;
+    background: var(--warm-sand);
+    margin: 1.2rem auto 0;
+  }
+  .hero-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--stone); margin-top: 1.5rem; font-weight: 300;
+    opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .hero-tagline {
+    font-family: 'Lora', serif; font-style: italic;
+    font-size: 1.15rem; color: var(--warm-sand);
+    margin-top: 2.5rem; font-weight: 400;
+    opacity: 0; animation: fadeUp 1s ease 1.1s forwards;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--stone); font-size: 0.6rem; letter-spacing: 0.3em;
+    text-transform: uppercase; z-index: 3;
+    opacity: 0; animation: fadeUp 1s ease 1.4s forwards;
+  }
+  .hero-scroll .scroll-line {
+    width: 1px; height: 40px; background: linear-gradient(to bottom, var(--warm-sand), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(20px); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* ── Floating Leaf Decorations ── */
+  .leaf {
+    position: absolute; font-size: 1.6rem; opacity: 0.12;
+    animation: floatLeaf 8s ease-in-out infinite;
+  }
+  .leaf:nth-child(6) { top: 12%; left: 8%; animation-delay: 0s; }
+  .leaf:nth-child(7) { top: 65%; right: 6%; animation-delay: 2s; }
+  .leaf:nth-child(8) { bottom: 18%; left: 12%; animation-delay: 4s; }
+  @keyframes floatLeaf { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(8deg); } }
+
+  /* ── Section Shared ── */
+  .section-eyebrow {
+    font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--sage); font-weight: 500; margin-bottom: 0.8rem;
+  }
+  .section-heading {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--obsidian); line-height: 1.2;
+    margin-bottom: 1.2rem;
+  }
+  .section-heading.light { color: var(--linen); }
+  .section-desc {
+    font-size: 0.9rem; color: #6b6560;
+    line-height: 1.8; max-width: 520px;
+    font-weight: 300;
+  }
+  .section-desc.light { color: var(--stone); }
+
+  /* ── Reveal Animation ── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── About Section ── */
+  .about {
+    padding: 8rem 3rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    max-width: 1300px; margin: 0 auto;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%; aspect-ratio: 4/5;
+    background: url('landing%20page%20image/12%20YEARS.jpg') center/cover no-repeat;
+    border-radius: 2px; position: relative; overflow: hidden;
+  }
+  .about-img-main::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(201,168,124,0.1));
+  }
+  .about-img-main .placeholder-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--obsidian); opacity: 0.25;
+  }
+  .placeholder-content svg { width: 48px; height: 48px; margin-bottom: 0.8rem; }
+  .placeholder-content span { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; }
+
+  .about-img-accent {
+    position: absolute; bottom: -2rem; right: -2rem;
+    width: 55%; aspect-ratio: 1;
+    border: 2px solid var(--warm-sand);
+    border-radius: 2px;
+    z-index: -1;
+  }
+  .about-stat-float {
+    position: absolute; top: -1.5rem; right: -1.5rem;
+    background: var(--obsidian); color: var(--warm-sand);
+    padding: 1.5rem; text-align: center;
+    min-width: 120px;
+  }
+  .about-stat-float .num {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem; font-weight: 600;
+    line-height: 1;
+  }
+  .about-stat-float .label {
+    font-size: 0.55rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--stone);
+    margin-top: 0.3rem;
+  }
+  .about-text .values {
+    display: flex; gap: 2rem; margin-top: 2.5rem;
+  }
+  .about-text .values .value {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+  }
+  .value-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 1px solid var(--warm-sand);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--warm-sand); font-size: 0.85rem;
+  }
+  .value-text h4 {
+    font-family: 'Lora', serif;
+    font-size: 0.85rem; font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .value-text p { font-size: 0.72rem; color: #8a847e; line-height: 1.5; }
+
+  /* ── Services Section ── */
+  .services {
+    background: var(--obsidian);
+    padding: 8rem 3rem;
+    position: relative;
+  }
+  .services::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, var(--linen-light), var(--obsidian));
+  }
+  .services-inner {
+    max-width: 1300px; margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .services-header { text-align: center; margin-bottom: 4rem; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .service-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,124,0.1);
+    padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    transition: all 0.5s ease;
+    cursor: pointer;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--warm-sand), transparent);
+    transform: scaleX(0); transition: transform 0.5s ease;
+  }
+  .service-card:hover { border-color: rgba(201,168,124,0.3); transform: translateY(-4px); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card .number {
+    font-family: 'Lora', serif;
+    font-size: 2.5rem; color: rgba(201,168,124,0.1);
+    font-weight: 700; margin-bottom: 1.5rem; line-height: 1;
+  }
+  .service-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.2rem; color: var(--linen);
+    margin-bottom: 0.8rem; font-weight: 500;
+  }
+  .service-card p {
+    font-size: 0.78rem; color: var(--stone);
+    line-height: 1.7; font-weight: 300;
+  }
+  .service-card .arrow {
+    margin-top: 1.5rem; display: inline-block;
+    color: var(--warm-sand); font-size: 1.2rem;
+    transition: transform 0.3s ease; opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+  }
+  .service-card:hover .arrow { opacity: 1; transform: translateX(0); }
+
+  /* ── Portfolio / Work Section ── */
+  .portfolio {
+    padding: 8rem 3rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .portfolio-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 4rem;
+  }
+  .portfolio-filters {
+    display: flex; gap: 1.5rem;
+  }
+  .portfolio-filters button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: #999;
+    padding: 0.4rem 0; position: relative;
+    transition: color 0.3s ease;
+  }
+  .portfolio-filters button.active,
+  .portfolio-filters button:hover { color: var(--obsidian); }
+  .portfolio-filters button.active::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 1px; background: var(--rust);
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 200px;
+    gap: 1.2rem;
+  }
+  .portfolio-item {
+    position: relative; overflow: hidden;
+    border-radius: 2px; cursor: pointer;
+    background: var(--stone);
+  }
+  .portfolio-item:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+  .portfolio-item:nth-child(2) { grid-column: span 5; grid-row: span 1; }
+  .portfolio-item:nth-child(3) { grid-column: span 5; grid-row: span 1; }
+  .portfolio-item:nth-child(4) { grid-column: span 4; grid-row: span 2; }
+  .portfolio-item:nth-child(5) { grid-column: span 4; grid-row: span 2; }
+  .portfolio-item:nth-child(6) { grid-column: span 4; grid-row: span 2; }
+
+  .portfolio-item .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,24,20,0.85), transparent 60%);
+    opacity: 0; transition: opacity 0.4s ease;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 1.8rem;
+  }
+  .portfolio-item:hover .overlay { opacity: 1; }
+  .overlay h4 {
+    font-family: 'Lora', serif;
+    font-size: 1.1rem; color: var(--linen);
+    margin-bottom: 0.3rem;
+  }
+  .overlay span {
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--warm-sand);
+  }
+  .portfolio-item .item-bg {
+    width: 100%; height: 100%;
+    transition: transform 0.6s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .portfolio-item:hover .item-bg { transform: scale(1.05); }
+  .item-bg .placeholder-icon {
+    font-size: 2.5rem; opacity: 0.15;
+    color: var(--obsidian);
+  }
+
+  /* portfolio item images */
+  .portfolio-item .item-bg {
+    background-size: cover; background-position: center;
+  }
+  .portfolio-item:nth-child(1) .item-bg { background-image: url('landing%20page%20image/INTERIOR%20DESIGN/pexels-orlovamaria-4906249.jpg'); }
+  .portfolio-item:nth-child(2) .item-bg { background-image: url('landing%20page%20image/change%20the%20pic/walnut%20dining%20set.jpg'); }
+  .portfolio-item:nth-child(3) .item-bg { background-image: url('landing%20page%20image/change%20the%20pic/urban%20loft%20kitchen.jpg'); }
+  .portfolio-item:nth-child(4) .item-bg { background-image: url('landing%20page%20image/INTERIOR%20DESIGN/pexels-the-ghazi-2152398165-32473245.jpg'); }
+  .portfolio-item:nth-child(5) .item-bg { background-image: url('landing%20page%20image/change%20the%20pic/heritage%20brown%20stone.jpg'); }
+  .portfolio-item:nth-child(6) .item-bg { background-image: url('landing%20page%20image/change%20the%20pic/Firse%20side%20reading%20nook.jpg'); }
+
+  /* ── Booking Modal ── */
+  .booking-modal {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(26,24,20,0.92);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .booking-modal.active { opacity: 1; visibility: visible; }
+  .booking-modal-content {
+    background: var(--linen-light);
+    width: 90vw; max-width: 580px;
+    max-height: 90vh; overflow-y: auto;
+    border-radius: 2px;
+    animation: lightboxIn 0.4s ease;
+    position: relative;
+  }
+  .booking-modal-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: none; border: none;
+    color: var(--obsidian); font-size: 1.8rem;
+    cursor: pointer; transition: color 0.3s ease;
+    z-index: 2; line-height: 1;
+  }
+  .booking-modal-close:hover { color: var(--rust); }
+  .booking-header {
+    background: var(--obsidian);
+    padding: 2.5rem 2.5rem 2rem;
+  }
+  .booking-header p {
+    font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 0.6rem;
+  }
+  .booking-header h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem; color: var(--linen); line-height: 1.3;
+  }
+  .booking-header span {
+    display: block; font-size: 0.78rem; color: var(--stone);
+    margin-top: 0.6rem; font-weight: 300;
+  }
+  .booking-form {
+    padding: 2rem 2.5rem 2.5rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .form-group {
+    display: flex; flex-direction: column; gap: 0.35rem;
+  }
+  .form-group.full { grid-column: span 2; }
+  .form-group label {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #6b6560; font-weight: 500;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem; padding: 0.75rem 1rem;
+    border: 1px solid var(--stone);
+    background: white; color: var(--obsidian);
+    border-radius: 2px; outline: none;
+    transition: border-color 0.3s ease;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--warm-sand);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: #b5b0aa; font-weight: 300;
+  }
+  .form-group select { cursor: pointer; color: #6b6560; }
+  .form-group select option { color: var(--obsidian); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .booking-submit {
+    display: block; width: 100%; padding: 1rem;
+    background: var(--obsidian); color: var(--warm-sand);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; font-weight: 500;
+    border: 1px solid var(--obsidian);
+    cursor: pointer; transition: all 0.3s ease;
+    margin-top: 0.5rem;
+  }
+  .booking-submit:hover {
+    background: var(--warm-sand); color: var(--obsidian);
+    border-color: var(--warm-sand);
+  }
+  .booking-success {
+    display: none; text-align: center;
+    padding: 3rem 2.5rem;
+  }
+  .booking-success.show { display: block; }
+  .booking-success .check {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2px solid var(--sage);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem; color: var(--sage); font-size: 1.5rem;
+  }
+  .booking-success h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.4rem; color: var(--obsidian);
+    margin-bottom: 0.5rem;
+  }
+  .booking-success p {
+    font-size: 0.82rem; color: #6b6560;
+    font-weight: 300; line-height: 1.6;
+  }
+  @media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: span 1; }
+    .booking-header, .booking-form { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+
+  /* ── Service Gallery Modal ── */
+  .service-gallery-modal {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(26,24,20,0.95);
+    backdrop-filter: blur(8px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    overflow-y: auto;
+  }
+  .service-gallery-modal.active { opacity: 1; visibility: visible; }
+  .service-gallery-close {
+    position: fixed; top: 1.5rem; right: 2rem;
+    background: none; border: none;
+    color: var(--linen); font-size: 2.2rem;
+    cursor: pointer; z-index: 10001;
+    transition: color 0.3s ease;
+  }
+  .service-gallery-close:hover { color: var(--warm-sand); }
+  .service-gallery-header {
+    text-align: center; padding: 5rem 2rem 2.5rem;
+  }
+  .service-gallery-header .sg-number {
+    font-family: 'Lora', serif;
+    font-size: 4rem; color: rgba(201,168,124,0.12);
+    font-weight: 700; line-height: 1;
+  }
+  .service-gallery-header h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    color: var(--linen); margin: 0.5rem 0 0.8rem;
+  }
+  .service-gallery-header p {
+    font-size: 0.85rem; color: var(--stone);
+    max-width: 550px; margin: 0 auto;
+    font-weight: 300; line-height: 1.7;
+  }
+  .service-gallery-grid {
+    max-width: 1300px; margin: 0 auto;
+    padding: 1rem 2rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 280px;
+    gap: 1rem;
+  }
+  .service-gallery-grid .sg-item {
+    overflow: hidden; border-radius: 2px;
+    cursor: pointer; position: relative;
+  }
+  .sg-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .sg-item:hover img { transform: scale(1.05); }
+  /* make first image span larger */
+  .service-gallery-grid .sg-item:nth-child(1) {
+    grid-column: span 2; grid-row: span 2;
+  }
+  .service-gallery-cta {
+    text-align: center; padding: 3rem 2rem 2rem;
+  }
+  .service-gallery-cta .btn-primary {
+    background: var(--warm-sand); color: var(--obsidian);
+    border: 1px solid var(--warm-sand);
+  }
+  .service-gallery-cta .btn-primary:hover {
+    background: transparent; color: var(--warm-sand);
+  }
+  @media (max-width: 768px) {
+    .service-gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 200px;
+    }
+    .service-gallery-grid .sg-item:nth-child(1) {
+      grid-column: span 2; grid-row: span 1;
+    }
+  }
+
+  /* ── Back to Main Button ── */
+  .back-to-main {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    margin: 1.5rem auto 3rem; padding: 0.8rem 2rem;
+    background: none; border: 1px solid rgba(201,168,124,0.3);
+    color: var(--stone); font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .back-to-main:hover {
+    border-color: var(--warm-sand); color: var(--warm-sand);
+    background: rgba(201,168,124,0.05);
+  }
+  .back-to-main svg {
+    width: 14px; height: 14px; stroke: currentColor;
+    fill: none; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Portfolio filter transitions */
+  .portfolio-item { transition: opacity 0.4s ease, transform 0.4s ease; }
+  .portfolio-item.hidden { display: none; }
+
+  /* When filtered, override grid spans so items fill full width */
+  .portfolio-grid.filtered {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 300px;
+  }
+  .portfolio-grid.filtered .portfolio-item:nth-child(n) {
+    grid-column: span 1; grid-row: span 1;
+  }
+
+  /* ── Lightbox ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(26,24,20,0.92);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .lightbox.active { opacity: 1; visibility: visible; }
+  .lightbox-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    background: none; border: none;
+    color: var(--linen); font-size: 2.2rem;
+    cursor: pointer; transition: color 0.3s ease;
+    z-index: 2;
+  }
+  .lightbox-close:hover { color: var(--warm-sand); }
+  .lightbox-content {
+    width: 92vw; height: 92vh;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    animation: lightboxIn 0.4s ease;
+  }
+  @keyframes lightboxIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .lightbox-content img {
+    width: 100%; height: 82vh;
+    object-fit: cover; border-radius: 2px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .lightbox-caption {
+    text-align: center; margin-top: 1.5rem;
+  }
+  .lightbox-caption h4 {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem; color: var(--linen);
+    margin-bottom: 0.3rem;
+  }
+  .lightbox-caption span {
+    font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--warm-sand);
+  }
+
+  /* ── Process Modal ── */
+  .process-modal {
+    position: fixed; inset: 0; z-index: 10000;
+    background: var(--obsidian);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    overflow-y: auto;
+  }
+  .process-modal.active { opacity: 1; visibility: visible; }
+  .process-modal-close {
+    position: fixed; top: 1.5rem; right: 2rem;
+    background: none; border: none;
+    color: var(--linen); font-size: 2.2rem;
+    cursor: pointer; z-index: 10001;
+    transition: color 0.3s ease;
+  }
+  .process-modal-close:hover { color: var(--warm-sand); }
+  .process-modal-header {
+    text-align: center; padding: 5rem 2rem 3rem;
+  }
+  .process-modal-header p {
+    font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 0.8rem;
+  }
+  .process-modal-header h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--linen); line-height: 1.2;
+  }
+  .process-step-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 70vh; position: relative;
+  }
+  .process-step-row:nth-child(even) .process-step-img { order: 2; }
+  .process-step-row:nth-child(even) .process-step-info { order: 1; }
+  .process-step-img {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    min-height: 400px;
+  }
+  .process-step-info {
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 4rem 5rem;
+  }
+  .process-step-info .step-number {
+    font-family: 'Lora', serif;
+    font-size: 5rem; font-weight: 700;
+    color: rgba(201,168,124,0.1); line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .process-step-info h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.8rem; color: var(--linen);
+    margin-bottom: 1rem;
+  }
+  .process-step-info p {
+    font-size: 0.88rem; color: var(--stone);
+    line-height: 1.8; font-weight: 300;
+    max-width: 420px;
+  }
+  .process-step-info .step-detail {
+    margin-top: 1.5rem; padding-top: 1.5rem;
+    border-top: 1px solid rgba(201,168,124,0.15);
+  }
+  .process-step-info .step-detail li {
+    font-size: 0.78rem; color: #8a847e;
+    margin-bottom: 0.5rem; list-style: none;
+    padding-left: 1.2rem; position: relative;
+    font-weight: 300;
+  }
+  .process-step-info .step-detail li::before {
+    content: ''; position: absolute; left: 0; top: 0.5em;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--warm-sand);
+  }
+  .process-modal-cta {
+    text-align: center; padding: 5rem 2rem;
+    border-top: 1px solid rgba(201,168,124,0.1);
+  }
+  .process-modal-cta h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem; color: var(--linen);
+    margin-bottom: 0.8rem;
+  }
+  .process-modal-cta p {
+    font-size: 0.85rem; color: var(--stone);
+    margin-bottom: 2rem; font-weight: 300;
+  }
+  @media (max-width: 768px) {
+    .process-step-row { grid-template-columns: 1fr; }
+    .process-step-row:nth-child(even) .process-step-img { order: 1; }
+    .process-step-row:nth-child(even) .process-step-info { order: 2; }
+    .process-step-info { padding: 2.5rem 1.5rem; }
+    .process-step-img { min-height: 280px; }
+  }
+
+  /* ── Testimonial Section ── */
+  .testimonials {
+    background: var(--linen);
+    padding: 8rem 3rem;
+    position: relative;
+  }
+  .testimonials-inner {
+    max-width: 900px; margin: 0 auto; text-align: center;
+    position: relative;
+  }
+  .testimonial-slider { position: relative; overflow: hidden; }
+  .testimonial-slide {
+    display: none; flex-direction: column; align-items: center;
+  }
+  .testimonial-slide.active { display: flex; animation: fadeIn 0.6s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .quote-mark {
+    font-family: 'Lora', serif;
+    font-size: 5rem; color: var(--warm-sand);
+    line-height: 1; margin-bottom: -1rem; opacity: 0.4;
+  }
+  .testimonial-text {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem; line-height: 1.8;
+    color: var(--obsidian); font-style: italic;
+    max-width: 700px; margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  .testimonial-author .name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.1em; color: var(--obsidian);
+  }
+  .testimonial-author .role {
+    font-size: 0.7rem; color: var(--rust);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+  .testimonial-dots {
+    display: flex; gap: 0.6rem; justify-content: center;
+    margin-top: 2.5rem;
+  }
+  .testimonial-dots button {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 1px solid var(--warm-sand); background: transparent;
+    cursor: pointer; transition: background 0.3s ease;
+  }
+  .testimonial-dots button.active { background: var(--warm-sand); }
+
+  /* Testimonial Arrows */
+  .testimonial-arrow {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 48px; height: 48px;
+    border: 1px solid var(--warm-sand);
+    background: transparent;
+    color: var(--warm-sand);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+  .testimonial-arrow:hover {
+    background: var(--warm-sand);
+    color: var(--obsidian);
+  }
+  .testimonial-arrow svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .testimonial-arrow.arrow-left { left: 0; }
+  .testimonial-arrow.arrow-right { right: 0; }
+
+  /* ── Process Section ── */
+  .process {
+    padding: 8rem 3rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .process-header { text-align: center; margin-bottom: 5rem; }
+  .process-timeline {
+    position: relative;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .process-timeline::before {
+    content: ''; position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 1px; background: var(--stone);
+    transform: translateX(-50%);
+  }
+  .process-step {
+    padding: 2.5rem;
+    position: relative;
+  }
+  .process-step:nth-child(odd) { text-align: right; padding-right: 4rem; }
+  .process-step:nth-child(even) { padding-left: 4rem; margin-top: 4rem; }
+  .process-step .dot {
+    position: absolute; top: 2.5rem;
+    width: 12px; height: 12px;
+    border: 2px solid var(--warm-sand);
+    border-radius: 50%; background: var(--linen-light);
+  }
+  .process-step:nth-child(odd) .dot { right: -6px; }
+  .process-step:nth-child(even) .dot { left: -6px; }
+  .process-step .step-num {
+    font-family: 'Lora', serif;
+    font-size: 0.75rem; color: var(--rust);
+    letter-spacing: 0.2em; margin-bottom: 0.5rem;
+  }
+  .process-step h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem; margin-bottom: 0.6rem;
+    color: var(--obsidian);
+  }
+  .process-step p {
+    font-size: 0.8rem; color: #7a756f;
+    line-height: 1.7; font-weight: 300;
+  }
+
+  /* ── CTA Banner ── */
+  .cta-banner {
+    background: var(--obsidian);
+    background-image: url('landing%20page%20image/pexels-tima-miroshnichenko-6474451.jpg');
+    background-size: cover; background-position: center;
+    padding: 6rem 3rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(26,24,20,0.8);
+  }
+  .cta-inner { position: relative; z-index: 2; }
+  .cta-inner h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--linen); margin-bottom: 1rem;
+  }
+  .cta-inner p {
+    font-size: 0.85rem; color: var(--stone);
+    margin-bottom: 2.5rem; font-weight: 300;
+  }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block; padding: 1rem 2.5rem;
+    background: var(--warm-sand); color: var(--obsidian);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    font-weight: 500; transition: all 0.3s ease;
+    border: 1px solid var(--warm-sand);
+  }
+  .btn-primary:hover { background: transparent; color: var(--warm-sand); }
+  .btn-outline {
+    display: inline-block; padding: 1rem 2.5rem;
+    border: 1px solid rgba(201,168,124,0.4);
+    color: var(--warm-sand);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    font-weight: 400; transition: all 0.3s ease;
+  }
+  .btn-outline:hover { border-color: var(--warm-sand); background: rgba(201,168,124,0.08); }
+
+  /* ── Footer ── */
+  footer {
+    background: #151210;
+    padding: 5rem 3rem 2rem;
+    color: var(--stone);
+  }
+  .footer-top {
+    max-width: 1300px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 4rem;
+  }
+  .footer-brand .f-logo {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem; letter-spacing: 0.15em;
+    color: var(--linen); margin-bottom: 1rem;
+  }
+  .footer-brand p {
+    font-size: 0.78rem; line-height: 1.7;
+    color: #7a756f; max-width: 280px;
+    font-weight: 300;
+  }
+  .footer-col h5 {
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--warm-sand);
+    margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.6rem; }
+  .footer-col a {
+    font-size: 0.78rem; color: #7a756f;
+    text-decoration: none; transition: color 0.3s ease;
+    font-weight: 300;
+  }
+  .footer-col a:hover { color: var(--linen); }
+  .footer-bottom {
+    max-width: 1300px; margin: 0 auto;
+    border-top: 1px solid rgba(201,168,124,0.1);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom span {
+    font-size: 0.68rem; color: #5a5550;
+    letter-spacing: 0.05em;
+  }
+  .footer-social { display: flex; gap: 1rem; }
+  .footer-social a {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,168,124,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--stone); font-size: 0.75rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .footer-social a:hover { border-color: var(--warm-sand); color: var(--warm-sand); }
+
+  /* ── Marquee ── */
+  .marquee-bar {
+    background: var(--warm-sand);
+    padding: 0.8rem 0; overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex; gap: 3rem;
+    animation: marquee 25s linear infinite;
+  }
+  .marquee-track span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--obsidian);
+    font-weight: 500;
+  }
+  .marquee-track .sep { color: var(--rust); }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .portfolio-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 220px;
+    }
+    .portfolio-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+    .portfolio-item:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-toggle { display: flex; }
+    .about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    .services { padding: 5rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio { padding: 5rem 1.5rem; }
+    .portfolio-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 250px; }
+    .portfolio-item:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+    .process-timeline { grid-template-columns: 1fr; }
+    .process-timeline::before { left: 0; }
+    .process-step:nth-child(odd) { text-align: left; padding-left: 2.5rem; padding-right: 0; }
+    .process-step:nth-child(even) { padding-left: 2.5rem; margin-top: 0; }
+    .process-step:nth-child(odd) .dot { left: -6px; right: auto; }
+    .testimonial-text { font-size: 1.05rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .about-text .values { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Preloader -->
+<div id="preloader">
+  <div class="logo-reveal">MAEVEN<span>HOME & LIVING</span></div>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#" class="nav-brand">
+    <div class="brand-icon"></div>
+    MAEVEN
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Voices</a></li>
+  </ul>
+  <a href="#" class="nav-cta booking-trigger">Book a Consult</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-accent-line"></div>
+  <div class="leaf">&#x1F33F;</div>
+  <div class="leaf">&#x1F33F;</div>
+  <div class="leaf">&#x1F33F;</div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Renovation &middot; Custom Furniture &middot; Interior Design</p>
+    <h1 class="hero-logo">MAEVEN</h1>
+    <p class="hero-sub">Home & Living</p>
+    <p class="hero-tagline">Where rooms find their story.</p>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Explore
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>Considered Design</span><span class="sep">&bull;</span>
+    <span>Warm Spaces</span><span class="sep">&bull;</span>
+    <span>Custom Craft</span><span class="sep">&bull;</span>
+    <span>Timeless Living</span><span class="sep">&bull;</span>
+    <span>Grounded Beauty</span><span class="sep">&bull;</span>
+    <span>Approachable Luxury</span><span class="sep">&bull;</span>
+    <span>Considered Design</span><span class="sep">&bull;</span>
+    <span>Warm Spaces</span><span class="sep">&bull;</span>
+    <span>Custom Craft</span><span class="sep">&bull;</span>
+    <span>Timeless Living</span><span class="sep">&bull;</span>
+    <span>Grounded Beauty</span><span class="sep">&bull;</span>
+    <span>Approachable Luxury</span><span class="sep">&bull;</span>
+  </div>
+</div>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-visual reveal">
+    <div class="about-img-main"></div>
+    <div class="about-img-accent"></div>
+    <div class="about-stat-float">
+      <div class="num">12+</div>
+      <div class="label">Years of Craft</div>
+    </div>
+  </div>
+  <div class="about-text reveal">
+    <p class="section-eyebrow">Our Story</p>
+    <h2 class="section-heading">Designed with<br>intention, built<br>with care.</h2>
+    <p class="section-desc">
+      At Maeven, we believe every room holds a story waiting to unfold. Our team of designers and craftspeople bring together considered aesthetics with honest materials to create spaces that feel like home from the very first moment.
+    </p>
+    <div class="values">
+      <div class="value">
+        <div class="value-icon">&loz;</div>
+        <div class="value-text">
+          <h4>Craft-Forward</h4>
+          <p>Every joint, finish, and detail is intentional.</p>
+        </div>
+      </div>
+      <div class="value">
+        <div class="value-icon">&sim;</div>
+        <div class="value-text">
+          <h4>Warm Minimalism</h4>
+          <p>Less noise, more soul. Spaces that breathe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header reveal">
+      <p class="section-eyebrow" style="color: var(--sage);">What We Do</p>
+      <h2 class="section-heading light">Spaces shaped<br>around you.</h2>
+      <p class="section-desc light" style="margin: 0 auto;">
+        From the first sketch to the final cushion, we handle every layer of bringing a space to life.
+      </p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal" data-service="interior">
+        <div class="number">01</div>
+        <h3>Interior Design</h3>
+        <p>Full-service interior design from concept boards to final styling. We craft environments that reflect who you are and how you live.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="service-card reveal" data-service="furniture">
+        <div class="number">02</div>
+        <h3>Custom Furniture</h3>
+        <p>Bespoke furniture designed and built to your exact specifications. Solid wood, honest joinery, and finishes that age beautifully.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="service-card reveal" data-service="renovation">
+        <div class="number">03</div>
+        <h3>Renovation</h3>
+        <p>Thoughtful renovations that respect the bones of your space while reimagining its potential. Kitchens, bathrooms, and full homes.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="service-card reveal" data-service="planning">
+        <div class="number">04</div>
+        <h3>Space Planning</h3>
+        <p>Strategic layout and flow design that maximizes every square foot. We study how you move, then design around it.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="service-card reveal" data-service="sourcing">
+        <div class="number">05</div>
+        <h3>Material Sourcing</h3>
+        <p>We source stones, woods, textiles, and hardware from trusted suppliers who share our commitment to quality and sustainability.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="service-card reveal" data-service="styling">
+        <div class="number">06</div>
+        <h3>Styling & Staging</h3>
+        <p>The finishing layer that brings a room together. Art, objects, textiles, and greenery placed with purpose and personality.</p>
+        <span class="arrow">&rarr;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <p class="section-eyebrow">Selected Work</p>
+      <h2 class="section-heading">Stories we've<br>helped tell.</h2>
+    </div>
+    <div class="portfolio-filters">
+      <button class="active">All</button>
+      <button>Interiors</button>
+      <button>Furniture</button>
+      <button>Renovation</button>
+    </div>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item reveal" data-category="interiors" data-img="landing%20page%20image/INTERIOR%20DESIGN/pexels-orlovamaria-4906249.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>The Timber Hearth Pavilion</h4>
+        <span>Full Home &middot; Interior Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-category="furniture" data-img="landing%20page%20image/change%20the%20pic/walnut%20dining%20set.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>Walnut Dining Set</h4>
+        <span>Custom Furniture</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-category="renovation" data-img="landing%20page%20image/change%20the%20pic/urban%20loft%20kitchen.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>Urban Loft Kitchen</h4>
+        <span>Renovation</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-category="interiors" data-img="landing%20page%20image/INTERIOR%20DESIGN/pexels-the-ghazi-2152398165-32473245.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>The Modern Wood Lounge</h4>
+        <span>Interior Design</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-category="renovation" data-img="landing%20page%20image/change%20the%20pic/heritage%20brown%20stone.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>Heritage Brownstone</h4>
+        <span>Full Renovation</span>
+      </div>
+    </div>
+    <div class="portfolio-item reveal" data-category="furniture" data-img="landing%20page%20image/change%20the%20pic/Firse%20side%20reading%20nook.jpg">
+      <div class="item-bg"></div>
+      <div class="overlay">
+        <h4>Fireside Reading Nook</h4>
+        <span>Custom Furniture &middot; Styling</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Service Gallery Modal -->
+<div class="service-gallery-modal" id="serviceGalleryModal">
+  <button class="service-gallery-close" id="serviceGalleryClose" aria-label="Close">&times;</button>
+  <div class="service-gallery-header">
+    <div class="sg-number" id="sgNumber"></div>
+    <h2 id="sgTitle"></h2>
+    <p id="sgDesc"></p>
+  </div>
+  <div class="service-gallery-grid" id="sgGrid"></div>
+  <div class="service-gallery-cta">
+    <a href="#" class="btn-primary" id="sgBookBtn">Book This Service</a>
+  </div>
+  <button class="back-to-main close-modal-btn" aria-label="Back to main page">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Main Page
+  </button>
+</div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" id="bookingModal">
+  <div class="booking-modal-content">
+    <button class="booking-modal-close" id="bookingModalClose" aria-label="Close">&times;</button>
+    <div class="booking-header">
+      <p>Book a Consultation</p>
+      <h2>Let's start your story.</h2>
+      <span>Tell us a bit about your project and we'll get back to you within 24 hours.</span>
+    </div>
+    <form class="booking-form" id="bookingForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bookName">Full Name</label>
+          <input type="text" id="bookName" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="bookEmail">Email</label>
+          <input type="email" id="bookEmail" placeholder="you@email.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bookPhone">Phone</label>
+          <input type="tel" id="bookPhone" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label for="bookService">Service Interested In</label>
+          <select id="bookService" required>
+            <option value="" disabled selected>Select a service</option>
+            <option value="interior">Interior Design</option>
+            <option value="furniture">Custom Furniture</option>
+            <option value="renovation">Renovation</option>
+            <option value="planning">Space Planning</option>
+            <option value="sourcing">Material Sourcing</option>
+            <option value="styling">Styling & Staging</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bookBudget">Estimated Budget</label>
+          <select id="bookBudget">
+            <option value="" disabled selected>Select a range</option>
+            <option value="under10k">Under $10,000</option>
+            <option value="10k-25k">$10,000 – $25,000</option>
+            <option value="25k-50k">$25,000 – $50,000</option>
+            <option value="50k-100k">$50,000 – $100,000</option>
+            <option value="100k+">$100,000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bookTimeline">Preferred Timeline</label>
+          <select id="bookTimeline">
+            <option value="" disabled selected>Select timeline</option>
+            <option value="asap">As soon as possible</option>
+            <option value="1-3months">1 – 3 months</option>
+            <option value="3-6months">3 – 6 months</option>
+            <option value="6months+">6+ months</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="bookMessage">Tell Us About Your Project</label>
+        <textarea id="bookMessage" placeholder="Describe your space, your vision, or any details you'd like us to know..."></textarea>
+      </div>
+      <button type="submit" class="booking-submit">Send Consultation Request</button>
+    </form>
+    <div class="booking-success" id="bookingSuccess">
+      <div class="check">&#10003;</div>
+      <h3>Request Received</h3>
+      <p>Thank you for reaching out. Our team will review your project details and get back to you within 24 hours to schedule your consultation.</p>
+      <button class="back-to-main close-modal-btn" style="margin-top: 2rem; color: var(--obsidian); border-color: var(--stone);" aria-label="Back to main page">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Main Page
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <div class="lightbox-content">
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption">
+      <h4 id="lightboxTitle"></h4>
+      <span id="lightboxSub"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Process Modal -->
+<div class="process-modal" id="processModal">
+  <button class="process-modal-close" id="processModalClose" aria-label="Close">&times;</button>
+  <div class="process-modal-header">
+    <p>Our Process</p>
+    <h2>How we bring your<br>vision to life.</h2>
+  </div>
+
+  <div class="process-step-row">
+    <div class="process-step-img" style="background-image: url('landing%20page%20image/change%20the%20pic/DISCOVERY.jpg');"></div>
+    <div class="process-step-info">
+      <div class="step-number">01</div>
+      <h3>Discovery</h3>
+      <p>We listen. We visit your space, learn how you live, and understand what matters most to you before sketching a single line.</p>
+      <ul class="step-detail">
+        <li>In-home consultation & walkthrough</li>
+        <li>Lifestyle & needs assessment</li>
+        <li>Budget & timeline alignment</li>
+        <li>Inspiration gathering</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="process-step-row">
+    <div class="process-step-img" style="background-image: url('landing%20page%20image/change%20the%20pic/CONCEPT%20AND%20DESIGN.jpg');"></div>
+    <div class="process-step-info">
+      <div class="step-number">02</div>
+      <h3>Concept & Design</h3>
+      <p>Mood boards, material palettes, and spatial plans take shape. We iterate with you until every detail feels right.</p>
+      <ul class="step-detail">
+        <li>Mood boards & concept direction</li>
+        <li>Material & finish selection</li>
+        <li>Floor plans & 3D visualizations</li>
+        <li>Detailed design presentations</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="process-step-row">
+    <div class="process-step-img" style="background-image: url('landing%20page%20image/change%20the%20pic/BUILD%20AND%20CRAFT.jpg');"></div>
+    <div class="process-step-info">
+      <div class="step-number">03</div>
+      <h3>Build & Craft</h3>
+      <p>Our trusted builders and artisans bring the design to life with precision and care. We manage every detail on-site.</p>
+      <ul class="step-detail">
+        <li>Project management & site supervision</li>
+        <li>Custom furniture fabrication</li>
+        <li>Contractor coordination</li>
+        <li>Quality checkpoints throughout</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="process-step-row">
+    <div class="process-step-img" style="background-image: url('landing%20page%20image/change%20the%20pic/REVEAL%20AND%20ENJOY.jpg');"></div>
+    <div class="process-step-info">
+      <div class="step-number">04</div>
+      <h3>Reveal & Enjoy</h3>
+      <p>The final styling, the last cushion placed. We hand you the keys to a space that finally feels like yours.</p>
+      <ul class="step-detail">
+        <li>Final styling & art placement</li>
+        <li>Professional photography</li>
+        <li>Walkthrough & handover</li>
+        <li>Post-project care guide</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="process-modal-cta">
+    <h3>Ready to start your story?</h3>
+    <p>Every great space begins with a conversation.</p>
+    <a href="#" class="btn-primary booking-trigger" id="processCtaBtn">Book a Consultation</a>
+  </div>
+  <button class="back-to-main close-modal-btn" aria-label="Back to main page">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Main Page
+  </button>
+</div>
+
+<!-- Process -->
+<section class="process" id="process">
+  <div class="process-header reveal">
+    <p class="section-eyebrow">How We Work</p>
+    <h2 class="section-heading">From vision<br>to reality.</h2>
+  </div>
+  <div class="process-timeline">
+    <div class="process-step reveal">
+      <div class="dot"></div>
+      <div class="step-num">01</div>
+      <h3>Discovery</h3>
+      <p>We listen. We visit your space, learn how you live, and understand what matters most to you before sketching a single line.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="dot"></div>
+      <div class="step-num">02</div>
+      <h3>Concept & Design</h3>
+      <p>Mood boards, material palettes, and spatial plans take shape. We iterate with you until every detail feels right.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="dot"></div>
+      <div class="step-num">03</div>
+      <h3>Build & Craft</h3>
+      <p>Our trusted builders and artisans bring the design to life with precision and care. We manage every detail on-site.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="dot"></div>
+      <div class="step-num">04</div>
+      <h3>Reveal & Enjoy</h3>
+      <p>The final styling, the last cushion placed. We hand you the keys to a space that finally feels like yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-inner reveal">
+    <p class="section-eyebrow">Client Voices</p>
+    <h2 class="section-heading" style="margin-bottom: 3rem;">What they say.</h2>
+    <div class="testimonial-slider">
+      <div class="testimonial-slide active">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="testimonial-text">Maeven didn't just design our home &mdash; they understood the feeling we were reaching for. Every room tells the story we wanted but couldn't articulate ourselves.</p>
+        <div class="testimonial-author">
+          <div class="name">Sarah & James K.</div>
+          <div class="role">Hillside Retreat Clients</div>
+        </div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="testimonial-text">The custom dining table they built is the heart of our home now. Guests always ask about it. The craftsmanship is extraordinary &mdash; you can feel the care in every joint.</p>
+        <div class="testimonial-author">
+          <div class="name">David L.</div>
+          <div class="role">Custom Furniture Client</div>
+        </div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="testimonial-text">Our kitchen renovation was seamless from start to finish. They were transparent, on schedule, and the result exceeded what we imagined. Truly a team that cares.</p>
+        <div class="testimonial-author">
+          <div class="name">Priya M.</div>
+          <div class="role">Urban Loft Renovation</div>
+        </div>
+      </div>
+    </div>
+    <button class="testimonial-arrow arrow-left" id="prevSlide" aria-label="Previous testimonial">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="testimonial-arrow arrow-right" id="nextSlide" aria-label="Next testimonial">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+    <div class="testimonial-dots">
+      <button class="active" onclick="showSlide(0)"></button>
+      <button onclick="showSlide(1)"></button>
+      <button onclick="showSlide(2)"></button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner" id="contact">
+  <div class="cta-inner reveal">
+    <p class="section-eyebrow" style="color: var(--sage);">Start Your Story</p>
+    <h2>Let's design something<br>that feels like home.</h2>
+    <p>Book a free consultation and tell us about the space you're dreaming of.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary booking-trigger">Book a Consultation</a>
+      <a href="#" class="btn-outline" id="viewProcessBtn">View Our Process</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="f-logo">MAEVEN</div>
+      <p>Renovation, custom furniture, and interior design for homes that tell a story. Based in craft, grounded in warmth.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#" class="footer-service" data-service="interior">Interior Design</a></li>
+        <li><a href="#" class="footer-service" data-service="furniture">Custom Furniture</a></li>
+        <li><a href="#" class="footer-service" data-service="renovation">Renovation</a></li>
+        <li><a href="#" class="footer-service" data-service="planning">Space Planning</a></li>
+        <li><a href="#" class="footer-service" data-service="sourcing">Material Sourcing</a></li>
+        <li><a href="#" class="footer-service" data-service="styling">Styling & Staging</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#testimonials">Voices</a></li>
+        <li><a href="#" class="booking-trigger">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <ul>
+        <li><a href="#">hello@maeven.co</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2025 Maeven Home & Living. All rights reserved.</span>
+    <div class="footer-social">
+      <a href="#" title="Instagram">IG</a>
+      <a href="#" title="Pinterest">PI</a>
+      <a href="#" title="LinkedIn">LI</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Preloader
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 1200);
+  });
+
+  // Cursor glow
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // Nav scroll effect
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // Testimonial slider
+  function showSlide(index) {
+    document.querySelectorAll('.testimonial-slide').forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.testimonial-dots button').forEach((d, i) => {
+      d.classList.toggle('active', i === index);
+    });
+  }
+  // Arrow navigation
+  const totalSlides = 3;
+  let currentSlide = 0;
+  document.getElementById('prevSlide').addEventListener('click', () => {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+  });
+  document.getElementById('nextSlide').addEventListener('click', () => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  });
+
+  // Auto-rotate testimonials (resets on manual interaction)
+  let autoRotate = setInterval(() => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }, 5000);
+
+  // Portfolio filter interaction
+  const filterBtns = document.querySelectorAll('.portfolio-filters button');
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+  const portfolioGrid = document.querySelector('.portfolio-grid');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.textContent.trim().toLowerCase();
+      const isFiltered = filter !== 'all';
+      portfolioGrid.classList.toggle('filtered', isFiltered);
+      portfolioItems.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxSub = document.getElementById('lightboxSub');
+
+  portfolioItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const imgSrc = decodeURIComponent(item.dataset.img);
+      const title = item.querySelector('.overlay h4').textContent;
+      const sub = item.querySelector('.overlay span').innerHTML;
+      lightboxImg.src = imgSrc;
+      lightboxTitle.textContent = title;
+      lightboxSub.innerHTML = sub;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Service gallery data
+  const serviceData = {
+    interior: {
+      number: '01', title: 'Interior Design',
+      desc: 'Full-service interior design from concept boards to final styling. We craft environments that reflect who you are and how you live.',
+      folder: 'INTERIOR DESIGN',
+      images: [
+        'pexels-alef-morais-336305364-34277650.jpg','pexels-bemistermister-2442904.jpg',
+        'pexels-enesbeydilli-29517894.jpg','pexels-jenny-tran-2155428053-37033507.jpg',
+        'pexels-kseniachernaya-4450337.jpg','pexels-lamiko-3754699.jpg',
+        'pexels-medhat-ayad-122846-447592.jpg','pexels-orlovamaria-4906249.jpg',
+        'pexels-sinara-bianchet-2154511749-36247605.jpg','pexels-the-ghazi-2152398165-32473245.jpg'
+      ]
+    },
+    furniture: {
+      number: '02', title: 'Custom Furniture',
+      desc: 'Bespoke furniture designed and built to your exact specifications. Solid wood, honest joinery, and finishes that age beautifully.',
+      folder: 'CUSTOM FURNITURE',
+      images: [
+        'pexels-amar-8389905.jpg','pexels-artbovich-6284237.jpg',
+        'pexels-enginakyurt-12268566.jpg','pexels-jonathanborba-10115005.jpg',
+        'pexels-kimymoto-27975920.jpg','pexels-labskiii-14090904.jpg',
+        'pexels-musaortac-17568139.jpg','pexels-orlovamaria-4906250.jpg',
+        'pexels-rachel-claire-4846430.jpg','pexels-skylar-kang-6430742.jpg'
+      ]
+    },
+    renovation: {
+      number: '03', title: 'Renovation',
+      desc: 'Thoughtful renovations that respect the bones of your space while reimagining its potential. Kitchens, bathrooms, and full homes.',
+      folder: 'RENOVATION',
+      images: [
+        'pexels-blue-bird-7217921.jpg','pexels-blue-bird-7217974.jpg',
+        'pexels-blue-bird-7218525.jpg','pexels-brett-rogers-1898640-4642438.jpg',
+        'pexels-brettjordan-30924413.jpg','pexels-karlsolano-5317154.jpg',
+        'pexels-monica-4756489.jpg','pexels-monica-4817843.jpg',
+        'pexels-polina-tankilevitch-5583127.jpg','pexels-tima-miroshnichenko-6474458.jpg'
+      ]
+    },
+    planning: {
+      number: '04', title: 'Space Planning',
+      desc: 'Strategic layout and flow design that maximizes every square foot. We study how you move, then design around it.',
+      folder: 'SPACE PLANNING',
+      images: [
+        'pexels-a-darmel-7642112.jpg','pexels-anete-lusina-4792516.jpg',
+        'pexels-anthonyshkraba-production-8837595.jpg','pexels-ekaterina-bolovtsova-5393587.jpg',
+        'pexels-ivan-s-8962800.jpg','pexels-pavel-danilyuk-7937320.jpg',
+        'pexels-pixabay-159045.jpg','pexels-shvets-production-9049735.jpg',
+        'pexels-shvets-production-9049801.jpg','pexels-shvets-production-9052461.jpg'
+      ]
+    },
+    sourcing: {
+      number: '05', title: 'Material Sourcing',
+      desc: 'We source stones, woods, textiles, and hardware from trusted suppliers who share our commitment to quality and sustainability.',
+      folder: 'MATERIAL SOURCING',
+      images: [
+        'pexels-cottonbro-6567869.jpg','pexels-cottonbro-6580561.jpg',
+        'pexels-cottonbro-6653226.jpg','pexels-cottonbro-7505173.jpg',
+        'pexels-cottonbro-7505556.jpg','pexels-cottonbro-7505558.jpg',
+        'pexels-cottonbro-7505568.jpg','pexels-karola-g-4968585.jpg',
+        'pexels-mikhail-nilov-7828186.jpg','pexels-tiago-alves-710726839-19302430.jpg'
+      ]
+    },
+    styling: {
+      number: '06', title: 'Styling & Staging',
+      desc: 'The finishing layer that brings a room together. Art, objects, textiles, and greenery placed with purpose and personality.',
+      folder: 'STYLING STAGING',
+      images: [
+        'pexels-blue-bird-7217756.jpg','pexels-blue-bird-7217765.jpg',
+        'pexels-blue-bird-7217824.jpg','pexels-cottonbro-5137545.jpg',
+        'pexels-cottonbro-6583361.jpg','pexels-cottonbro-7407310.jpg',
+        'pexels-cottonbro-7408619.jpg','pexels-ekaterina-bolovtsova-5393440.jpg',
+        'pexels-ron-lach-7792650.jpg','pexels-ron-lach-9907659.jpg'
+      ]
+    }
+  };
+
+  const sgModal = document.getElementById('serviceGalleryModal');
+  const sgGrid = document.getElementById('sgGrid');
+  const sgNumber = document.getElementById('sgNumber');
+  const sgTitle = document.getElementById('sgTitle');
+  const sgDesc = document.getElementById('sgDesc');
+  const sgBookBtn = document.getElementById('sgBookBtn');
+  const bookService = document.getElementById('bookService');
+  let currentServiceKey = '';
+
+  document.querySelectorAll('.service-card[data-service]').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.service;
+      const data = serviceData[key];
+      if (!data) return;
+      currentServiceKey = key;
+      sgNumber.textContent = data.number;
+      sgTitle.textContent = data.title;
+      sgDesc.textContent = data.desc;
+      sgGrid.innerHTML = data.images.map(img =>
+        `<div class="sg-item"><img src="landing%20page%20image/${encodeURIComponent(data.folder)}/${encodeURIComponent(img)}" alt="${data.title}" loading="lazy"></div>`
+      ).join('');
+      // clicking a gallery image opens it in the lightbox
+      sgGrid.querySelectorAll('.sg-item').forEach(item => {
+        item.addEventListener('click', () => {
+          lightboxImg.src = item.querySelector('img').src;
+          lightboxTitle.textContent = data.title;
+          lightboxSub.textContent = '';
+          lightbox.classList.add('active');
+        });
+      });
+      sgModal.classList.add('active');
+      sgModal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  document.getElementById('serviceGalleryClose').addEventListener('click', () => {
+    sgModal.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  sgBookBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    sgModal.classList.remove('active');
+    bookService.value = currentServiceKey;
+    bookingForm.style.display = '';
+    bookingSuccess.classList.remove('show');
+    bookingModal.classList.add('active');
+  });
+
+  // Booking modal
+  const bookingModal = document.getElementById('bookingModal');
+  const bookingForm = document.getElementById('bookingForm');
+  const bookingSuccess = document.getElementById('bookingSuccess');
+
+  function openBooking(e) {
+    e.preventDefault();
+    // Close process modal if open
+    processModal.classList.remove('active');
+    bookingForm.style.display = '';
+    bookingSuccess.classList.remove('show');
+    bookingModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  document.querySelectorAll('.booking-trigger').forEach(btn => {
+    btn.addEventListener('click', openBooking);
+  });
+  document.getElementById('bookingModalClose').addEventListener('click', () => {
+    bookingModal.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+  bookingModal.addEventListener('click', (e) => {
+    if (e.target === bookingModal) {
+      bookingModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+  bookingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    bookingForm.style.display = 'none';
+    bookingSuccess.classList.add('show');
+  });
+
+  // Process modal
+  const processModal = document.getElementById('processModal');
+  document.getElementById('viewProcessBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    processModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('processModalClose').addEventListener('click', () => {
+    processModal.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+  document.getElementById('processCtaBtn').addEventListener('click', () => {
+    processModal.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  // Footer service links → open service gallery
+  document.querySelectorAll('.footer-service').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const key = link.dataset.service;
+      const data = serviceData[key];
+      if (!data) return;
+      currentServiceKey = key;
+      sgNumber.textContent = data.number;
+      sgTitle.textContent = data.title;
+      sgDesc.textContent = data.desc;
+      sgGrid.innerHTML = data.images.map(img =>
+        `<div class="sg-item"><img src="landing%20page%20image/${encodeURIComponent(data.folder)}/${encodeURIComponent(img)}" alt="${data.title}" loading="lazy"></div>`
+      ).join('');
+      sgGrid.querySelectorAll('.sg-item').forEach(item => {
+        item.addEventListener('click', () => {
+          lightboxImg.src = item.querySelector('img').src;
+          lightboxTitle.textContent = data.title;
+          lightboxSub.textContent = '';
+          lightbox.classList.add('active');
+        });
+      });
+      sgModal.classList.add('active');
+      sgModal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Back to Main Page buttons — close all modals
+  document.querySelectorAll('.close-modal-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sgModal.classList.remove('active');
+      processModal.classList.remove('active');
+      bookingModal.classList.remove('active');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
